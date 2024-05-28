@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+        <!-- Include the JSC library -->
+        <script src="https://code.jscharting.com/latest/jscharting.js"></script>
+        <!-- Include the JSC modules for improved performance -->
+        <script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
+    <title>Energy Dashboard</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">1st Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Energy Usage</h2>
+            <div id="chartDiv" style="max-width: 450px; height: 250px; margin: 0 auto;"></div>
+        </div>
+        <div class="card">
+            <h2>Energy Usage</h2>
+            <div id="chartDiv1" style="max-width: 450px; height: 250px; margin: 0 auto;"></div>
+        </div>
+        <div class="card">
+            <h2>Consumption Today</h2>
+            <div id="chartDiv2" style="max-width: 450px; height: 250px; margin: 0 auto;"></div>
+        </div>
+    </div>
+        <div class="row">
+            <div class="graph">
+                <h2>Daily Usage</h2>
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date">
+                <button onclick="downloadReport()">Download Report</button>
+                <canvas id="bar-graph" style="height: 400px;"></canvas>
+            </div>
+            <div class="heatmap">
+                <h2>Energy Usage Over Time</h2>
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date">
+                <button onclick="downloadReport()">Download Report</button>
+                <canvas id="heatmap" style="height: 400px;"></canvas>
+            </div>
+        </div>
+
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script>
+        var chart = JSC.chart('chartDiv', { 
+    debug: false, // Disable debug messages
+    type: 'gauge', 
+    animation_duration: 1000, 
+    legend_visible: false, 
+    xAxis: { spacingPercentage: 0.25 }, 
+    yAxis: { 
+        defaultTick: { 
+            padding: -5, 
+            label_style_fontSize: '14px'
+        }, 
+        line: { 
+            width: 9, 
+            color: 'smartPalette', 
+            breaks_gap: 0.06 
+        }, 
+        scale_range: [0, 100] 
+    }, 
+    palette: { 
+        pointValue: '{%value/100}', 
+        colors: ['green', 'yellow', 'red'] 
+    }, 
+    defaultTooltip_enabled: false, 
+    defaultSeries: { 
+        angle: { sweep: 180 }, 
+        shape: { 
+            innerSize: '70%', 
+            label: { 
+                text: 
+                    '<span color="%color">{%sum:n1}</span><br/><span color="#696969" fontSize="20px">kWh</span>', 
+                style_fontSize: '46px', 
+                verticalAlign: 'middle'
+            } 
+        } 
+    }, 
+    series: [ 
+        { 
+            type: 'column roundcaps', 
+            points: [{ id: '1', x: 'speed', y: 0 }] 
+        } 
+    ] 
+}); 
+
+// Function to update the gauge value
+function setGauge(max, y) { 
+    chart.series(0).options({ 
+        points: [{ id: '1', x: 'speed', y: y }] 
+    }); 
+} 
+
+// Function to update the gauge value at intervals
+function update() { 
+    setInterval(function() { 
+        setGauge(100, Math.random() * 100); 
+    }, 1200); 
+} 
+
+// Start updating the gauge
+update(); 
+var chart = JSC.chart('chartDiv1', { 
+    debug: false, // Disable debug messages
+    type: 'gauge', 
+    animation_duration: 1000, 
+    legend_visible: false, 
+    xAxis: { spacingPercentage: 0.25 }, 
+    yAxis: { 
+        defaultTick: { 
+            padding: -5, 
+            label_style_fontSize: '14px'
+        }, 
+        line: { 
+            width: 9, 
+            color: 'smartPalette', 
+            breaks_gap: 0.06 
+        }, 
+        scale_range: [0, 100] 
+    }, 
+    palette: { 
+        pointValue: '{%value/100}', 
+        colors: ['green', 'yellow', 'red'] 
+    }, 
+    defaultTooltip_enabled: false, 
+    defaultSeries: { 
+        angle: { sweep: 180 }, 
+        shape: { 
+            innerSize: '70%', 
+            label: { 
+                text: 
+                    '<span color="%color">{%sum:n1}</span><br/><span color="#696969" fontSize="20px">kWh</span>', 
+                style_fontSize: '46px', 
+                verticalAlign: 'middle'
+            } 
+        } 
+    }, 
+    series: [ 
+        { 
+            type: 'column roundcaps', 
+            points: [{ id: '1', x: 'speed', y: 0 }] 
+        } 
+    ] 
+}); 
+
+// Function to update the gauge value
+function setGauge(max, y) { 
+    chart.series(0).options({ 
+        points: [{ id: '1', x: 'speed', y: y }] 
+    }); 
+} 
+
+// Function to update the gauge value at intervals
+function update() { 
+    setInterval(function() { 
+        setGauge(100, Math.random() * 100); 
+    }, 1200); 
+} 
+
+// Start updating the gauge
+update(); 
+var chart = JSC.chart('chartDiv2', { 
+    debug: false, // Disable debug messages
+    type: 'gauge', 
+    animation_duration: 1000, 
+    legend_visible: false, 
+    xAxis: { spacingPercentage: 0.25 }, 
+    yAxis: { 
+        defaultTick: { 
+            padding: -5, 
+            label_style_fontSize: '14px'
+        }, 
+        line: { 
+            width: 9, 
+            color: 'smartPalette', 
+            breaks_gap: 0.06 
+        }, 
+        scale_range: [0, 100] 
+    }, 
+    palette: { 
+        pointValue: '{%value/100}', 
+        colors: ['green', 'yellow', 'red'] 
+    }, 
+    defaultTooltip_enabled: false, 
+    defaultSeries: { 
+        angle: { sweep: 180 }, 
+        shape: { 
+            innerSize: '70%', 
+            label: { 
+                text: 
+                    '<span color="%color">{%sum:n1}</span><br/><span color="#696969" fontSize="20px">kWh</span>', 
+                style_fontSize: '46px', 
+                verticalAlign: 'middle'
+            } 
+        } 
+    }, 
+    series: [ 
+        { 
+            type: 'column roundcaps', 
+            points: [{ id: '1', x: 'speed', y: 0 }] 
+        } 
+    ] 
+}); 
+
+// Function to update the gauge value
+function setGauge(max, y) { 
+    chart.series(0).options({ 
+        points: [{ id: '1', x: 'speed', y: y }] 
+    }); 
+} 
+
+// Function to update the gauge value at intervals
+function update() { 
+    setInterval(function() { 
+        setGauge(100, Math.random() * 100); 
+    }, 1200); 
+} 
+
+// Start updating the gauge
+update(); 
+    </script>
+</body>
+
+</html>
